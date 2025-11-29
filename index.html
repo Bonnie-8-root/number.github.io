@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数词大闯关</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+
+        .section-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .rule-box {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .mnemonic {
+            background-color: #fff8e1;
+            border: 2px dashed var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            color: #d35400;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+
+        .mnemonic-title {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            color: #e67e22;
+        }
+
+        .quiz-container {
+            margin-top: 20px;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .quiz-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .options {
+            display: flex;
+            gap: 30px; /* 3个字符的间隔 */
+            margin-top: 10px;
+        }
+
+        .question-item {
+            background: white;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="text"] {
+            width: 60%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #357abd;
+        }
+
+        .feedback {
+            font-size: 0.9em;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+
+        .correct { color: var(--success-color); }
+        .wrong { color: var(--error-color); }
+        .answer-key { color: #7f8c8d; font-size: 0.85em; display: none; }
+
+        .final-exam {
+            border-left-color: var(--secondary-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+
+        /* 时钟样式 */
+        .clock-explanation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 20px 0;
+            align-items: center;
+        }
+
+        .clock-diagram {
+            flex: 0 0 200px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .clock-face {
+            width: 150px;
+            height: 150px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            position: relative;
+            background: #f9f9f9;
+        }
+
+        .clock-center {
+            width: 8px;
+            height: 8px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .hour-hand {
+            width: 3px;
+            height: 40px;
+            background: #333;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%) rotate(0deg);
+            transform-origin: bottom center;
+        }
+
+        .minute-hand {
+            width: 2px;
+            height: 60px;
+            background: #e74c3c;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -100%) rotate(90deg);
+            transform-origin: bottom center;
+        }
+
+        .past-section {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+
+        .past-label {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2ecc71;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .past-arrow {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            width: 2px;
+            height: 50px;
+            background: #2ecc71;
+            transform: translateX(-50%);
+        }
+
+        .past-arrow::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 8px solid #2ecc71;
+        }
+
+        .to-section {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+        }
+
+        .to-label {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e74c3c;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .to-arrow {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            width: 2px;
+            height: 50px;
+            background: #e74c3c;
+            transform: translateX(-50%);
+        }
+
+        .to-arrow::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-bottom: 8px solid #e74c3c;
+        }
+
+        .clock-rules {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .time-table {
+            font-size: 0.9em;
+        }
+
+        .time-table th,
+        .time-table td {
+            padding: 6px;
+            text-align: center;
+        }
+
+        .time-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .time-table tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        /* 新的时钟示例样式 */
+        .clock-examples {
+            margin: 20px 0;
+        }
+
+        .example-clocks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .clock-example {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            min-width: 280px;
+        }
+
+        .clock-info {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .clock-info h5 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .clock-info p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .clock-info .highlight {
+            background: #ffeb3b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .clock-info em {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .clock-numbers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .number {
+            position: absolute;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #333;
+            transform: translate(-50%, -50%);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🇬🇧 英语数词大闯关</h1>
+        <p>掌握基数词与序数词，轻松搞定时间、日期与编号！</p>
+    </header>
+
+    <div class="section-card">
+        <h2>第一关：基数词 (Cardinal Numbers)</h2>
+        <p>基数词表示数量的多少（如：one, two, three）。</p>
+        
+        <div class="rule-box">
+            <strong>⚠️ 拼写易错点：</strong>
+            <ul>
+                <li><strong>1-12</strong>: 独立单词，需死记硬背 (one, two, three... twelve)。</li>
+                <li><strong>13-19</strong>: 以后缀 <em>-teen</em> 结尾 (thirteen, fifteen, eighteen)。</li>
+                <li><strong>20-90 (整十)</strong>: 以后缀 <em>-ty</em> 结尾 (twenty, forty, fifty)。</li>
+                <li><strong>21-99</strong>: 十位和个位之间要加连字符 "<strong>-</strong>" (twenty-one)。</li>
+            </ul>
+        </div>
+        
+        <div class="mnemonic">
+            <span class="mnemonic-title">💡 基数词记忆小贴士</span>
+            <p>12个单独记，13-19 teen结尾；<br>
+            整十 ty 结尾，几十几中间连字符；<br>
+            <strong>特别注意：</strong><br>
+            40是 forty (没u)，12是 twelve，15是 fifteen (不是fiveteen)！</p>
+        </div>
+
+        <div class="rule-box">
+            <strong>🌟 拓展知识：常用大数词</strong>
+            <ul>
+                <li><strong>zero</strong> (零): 表示没有数量 (如: zero mistakes)</li>
+                <li><strong>hundred</strong> (百): 100，前面有数字时用单数 (如: two hundred)</li>
+                <li><strong>thousand</strong> (千): 1,000，前面有数字时用单数 (如: five thousand)</li>
+                <li><strong>million</strong> (百万): 1,000,000，前面有数字时用单数 (如: three million)</li>
+                <li><strong>billion</strong> (十亿): 1,000,000,000，前面有数字时用单数 (如: one billion)</li>
+                <li><strong>grand</strong> (千元): 口语中表示一千美元或一千英镑 (如: ten grand = 10,000美元)</li>
+            </ul>
+            <p><strong>用法规则：</strong> 前面有具体数字时用单数，没有具体数字时用复数加of (如: hundreds of people, thousands of books)</p>
+        </div>
+
+        <div class="quiz-container">
+            <h3>📝 小测验：写出下列数字的英文</h3>
+            <div class="quiz-grid" id="quiz1">
+                </div>
+            <button class="btn" onclick="checkAnswers('quiz1', answers1)">提交答案</button>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>第二关：序数词 (Ordinal Numbers)</h2>
+        <p>序数词表示顺序的先后（如：first, second, third）。</p>
+
+        <div class="mnemonic">
+            <span class="mnemonic-title">🔥 必背口诀：基数词变序数词</span>
+            基变序，有规律，词尾加上 <strong>th</strong>。<br>
+            一二三，特殊记，词尾字母 <strong>t, d, d</strong> (first, second, third)。<br>
+            八去 <strong>t</strong> (eighth)，九去 <strong>e</strong> (ninth)，<br>
+            <strong>ve</strong> 要用 <strong>f</strong> 替 (five→fifth, twelve→twelfth)。<br>
+            整十 <strong>y</strong> 变 <strong>ie</strong>，末尾都要有个 <strong>th</strong> (twenty→twentieth)。<br>
+            若是遇到几十几，<strong>只变个位</strong>就可以 (twenty-one→twenty-first)。
+        </div>
+
+        <div class="quiz-container">
+            <h3>📝 小测验：写出下列数字的序数词</h3>
+            <div class="quiz-grid" id="quiz2">
+                </div>
+            <button class="btn" onclick="checkAnswers('quiz2', answers2)">提交答案</button>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>第三关：数词的用法 (Usage)</h2>
+        <div class="rule-box">
+            <ul>
+                <li><strong>编号：</strong> Room 101, Bus No. 5, Page 9 (首字母大写，用基数词)。</li>
+                <li><strong>日期：</strong> 5月1日 -> May (the) first (写作 May 1st)。</li>
+                <li><strong>分数：</strong> 分子用基数，分母用序数。分子大于1，分母加s (1/3 one third; 2/3 two third<strong>s</strong>)。</li>
+                <li><strong>确数与概数：</strong> hundred/thousand 前有数字不加s，没数字加s并带of (two hundred; hundreds of)。</li>
+            </ul>
+        </div>
+
+        <div class="rule-box">
+            <h3>🕐 时刻表达详解：逆读法 (Past & To)</h3>
+            <p><strong>逆读法</strong>是英语中表达时间的常用方法，通过past和to来表示分钟与整点的关系。</p>
+            
+            <div class="clock-examples">
+                <h4>🔍 时钟示例：清晰显示时针和分针的相对位置</h4>
+                
+                <div class="example-clocks">
+                    <!-- Past 示例：10:10 -->
+                    <div class="clock-example">
+                        <div class="clock-diagram">
+                            <div class="clock-face">
+                                <div class="clock-center"></div>
+                                <div class="hour-hand" style="transform: translate(-50%, -100%) rotate(300deg);"></div>
+                                <div class="minute-hand" style="transform: translate(-50%, -100%) rotate(60deg);"></div>
+                                <div class="clock-numbers">
+                                    <span class="number" style="top: 10px; left: 50%;">12</span>
+                                    <span class="number" style="top: 50%; right: 10px;">3</span>
+                                    <span class="number" style="bottom: 10px; left: 50%;">6</span>
+                                    <span class="number" style="top: 50%; left: 10px;">9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clock-info">
+                            <h5>Past 示例：10:10</h5>
+                            <p><strong>时针</strong>：指向10点位置</p>
+                            <p><strong>分针</strong>：指向2点位置（10分钟）</p>
+                            <p><strong>表达</strong>：<span class="highlight">ten past ten</span></p>
+                            <p><em>10分钟过去了10点</em></p>
+                        </div>
+                    </div>
+                    
+                    <!-- To 示例：8:45 -->
+                    <div class="clock-example">
+                        <div class="clock-diagram">
+                            <div class="clock-face">
+                                <div class="clock-center"></div>
+                                <div class="hour-hand" style="transform: translate(-50%, -100%) rotate(240deg);"></div>
+                                <div class="minute-hand" style="transform: translate(-50%, -100%) rotate(270deg);"></div>
+                                <div class="clock-numbers">
+                                    <span class="number" style="top: 10px; left: 50%;">12</span>
+                                    <span class="number" style="top: 50%; right: 10px;">3</span>
+                                    <span class="number" style="bottom: 10px; left: 50%;">6</span>
+                                    <span class="number" style="top: 50%; left: 10px;">9</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clock-info">
+                            <h5>To 示例：8:45</h5>
+                            <p><strong>时针</strong>：指向8点位置</p>
+                            <p><strong>分针</strong>：指向9点位置（45分钟）</p>
+                            <p><strong>表达</strong>：<span class="highlight">a quarter to nine</span></p>
+                            <p><em>差15分钟到9点</em></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="clock-rules">
+                    <h4>📋 使用规则：</h4>
+                    <ul>
+                        <li><strong>past (过)</strong>: 分钟数 ≤ 30分钟时使用，表示"几点过几分"</li>
+                        <li><strong>to (差)</strong>: 分钟数 > 30分钟时使用，表示"差几分到几点"</li>
+                    </ul>
+                    
+                    <h4>🎯 具体用法：</h4>
+                    <table class="time-table">
+                        <tr><th>分钟范围</th><th>表达方式</th><th>示例</th></tr>
+                        <tr><td>0-30分钟</td><td>分钟数 + past + 小时</td><td>8:10 → ten past eight</td></tr>
+                        <tr><td>15分钟</td><td>a quarter past + 小时</td><td>9:15 → a quarter past nine</td></tr>
+                        <tr><td>30分钟</td><td>half past + 小时</td><td>10:30 → half past ten</td></tr>
+                        <tr><td>31-59分钟</td><td>(60-分钟数) + to + (小时+1)</td><td>8:45 → a quarter to nine</td></tr>
+                        <tr><td>45分钟</td><td>a quarter to + (小时+1)</td><td>11:45 → a quarter to twelve</td></tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="mnemonic">
+                <span class="mnemonic-title">💡 记忆口诀</span>
+                <p>半点之前用past，半点之后用to；<br>
+                15分钟quarter，30分钟half要记住；<br>
+                超过半点要加1，差几分到几点要清楚！</p>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+            <h3>📝 小测验：根据句意填空或翻译</h3>
+            <div class="quiz-grid" id="quiz3">
+                </div>
+            <button class="btn" onclick="checkAnswers('quiz3', answers3)">提交答案</button>
+        </div>
+    </div>
+
+    <div class="section-card final-exam">
+        <h2>🏆 终极挑战：综合运用 (20题)</h2>
+        <p>混合考察拼写、语法和语境。</p>
+        <div class="quiz-container">
+            <div class="quiz-grid" id="quiz4">
+                </div>
+            <button class="btn" onclick="checkAnswers('quiz4', answers4)">提交终极挑战</button>
+            <p id="final-score" style="margin-top:15px; font-weight:bold; font-size:1.2em;"></p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 题目数据配置
+    // 关卡1：基数词
+    const q1_data = [
+        { q: "12", a: "twelve" },
+        { q: "40", a: "forty" },
+        { q: "15", a: "fifteen" },
+        { q: "18", a: "eighteen" },
+        { q: "90", a: "ninety" },
+        { q: "100", a: "one hundred" }, // accept hundred
+        { q: "21", a: "twenty-one" },
+        { q: "11", a: "eleven" }
+    ];
+
+    // 关卡2：序数词
+    const q2_data = [
+        { q: "1 (one)", a: "first" },
+        { q: "2 (two)", a: "second" },
+        { q: "3 (three)", a: "third" },
+        { q: "5 (five)", a: "fifth" },
+        { q: "9 (nine)", a: "ninth" },
+        { q: "12 (twelve)", a: "twelfth" },
+        { q: "20 (twenty)", a: "twentieth" },
+        { q: "31 (thirty-one)", a: "thirty-first" }
+    ];
+
+    // 关卡3：用法
+    const q3_data = [
+        { q: "There are ____ (60) minutes in an hour.", a: "sixty" },
+        { q: "We are in Class ____ (14).", a: "Fourteen" },
+        { q: "Please turn to Page ____ (8).", a: "Eight" },
+        { q: "Today is June ____ (2).", a: "second" },
+        { q: "Three ____ (4) of the students are girls.", a: "fourths" },
+        { q: "There are ____ (成百上千) of people.", a: "hundreds" },
+        { q: "I live on the ____ (12) floor.", a: "twelfth" },
+        { q: "My birthday is on May ____ (9).", a: "ninth" }
+    ];
+
+    // 终极挑战：选择题（10道） + 填空题（10道）
+    const q4_data = [
+        // 选择题部分（10道）- 语境中考察基数词、序数词用法
+        { q: "1. My birthday is on May ____.<br>A. fifteen&nbsp;&nbsp;&nbsp; B. fifteenth&nbsp;&nbsp;&nbsp; C. fiveteen&nbsp;&nbsp;&nbsp; D. fiveteenth", a: "B" },
+        { q: "2. Please turn to page ____ in your book.<br>A. forty&nbsp;&nbsp;&nbsp; B. fortieth&nbsp;&nbsp;&nbsp; C. fourty&nbsp;&nbsp;&nbsp; D. fourtieth", a: "A" },
+        { q: "3. She lives on the ____ floor of the building.<br>A. twelve&nbsp;&nbsp;&nbsp; B. twelfth&nbsp;&nbsp;&nbsp; C. twelveth&nbsp;&nbsp;&nbsp; D. twelfeth", a: "B" },
+        { q: "4. Today is my ____ birthday.<br>A. eighteen&nbsp;&nbsp;&nbsp; B. eighteenth&nbsp;&nbsp;&nbsp; C. eightteen&nbsp;&nbsp;&nbsp; D. eightteenth", a: "B" },
+        { q: "5. The meeting is in room ____.<br>A. two hundred and one&nbsp;&nbsp;&nbsp; B. two hundred first&nbsp;&nbsp;&nbsp; C. two hundred and first&nbsp;&nbsp;&nbsp; D. two hundred one", a: "A" },
+        { q: "6. ____ of students attended the school festival.<br>A. Hundred&nbsp;&nbsp;&nbsp; B. Hundreds&nbsp;&nbsp;&nbsp; C. Hundred of&nbsp;&nbsp;&nbsp; D. Hundreds of", a: "D" },
+        { q: "7. We need to buy ____ apples for the party.<br>A. thirty&nbsp;&nbsp;&nbsp; B. thirtieth&nbsp;&nbsp;&nbsp; C. thirtyth&nbsp;&nbsp;&nbsp; D. threety", a: "A" },
+        { q: "8. This is my ____ time visiting Beijing.<br>A. three&nbsp;&nbsp;&nbsp; B. third&nbsp;&nbsp;&nbsp; C. threeth&nbsp;&nbsp;&nbsp; D. thirth", a: "B" },
+        { q: "9. About ____ of the cake was eaten.<br>A. two third&nbsp;&nbsp;&nbsp; B. two thirds&nbsp;&nbsp;&nbsp; C. second third&nbsp;&nbsp;&nbsp; D. second thirds", a: "B" },
+        { q: "10. The train leaves at ____.<br>A. eight thirty&nbsp;&nbsp;&nbsp; B. eight thirtieth&nbsp;&nbsp;&nbsp; C. thirty eight&nbsp;&nbsp;&nbsp; D. thirtieth eight", a: "A" },
+        // 填空题部分（保留11道）
+        { q: "Wednesday is the ____ day of a week.", a: "fourth" }, // Assuming Sun is 1st
+        { q: "December is the ____ month of the year.", a: "twelfth" },
+        { q: "Two ____ (3) of the water is clean.", a: "thirds" },
+        { q: "Look at Picture ____ (2).", a: "Two" },
+        { q: "She is an ____ (11) year old girl.", a: "eleven" },
+        { q: "There are ____ (30) days in September.", a: "thirty" },
+        { q: "Lesson ____ (9) is difficult.", a: "Nine" },
+        { q: "We live in the ____ (21) century.", a: "twenty-first" },
+        { q: "____ (数以千计) of trees were planted.", a: "Thousands" },
+        { q: "One ____ (100) and one.", a: "hundred" }
+    ];
+
+    // 构建答案对象
+    const answers1 = q1_data.map(i => i.a);
+    const answers2 = q2_data.map(i => i.a);
+    const answers3 = q3_data.map(i => i.a);
+    const answers4 = q4_data.map(i => i.a);
+
+    // 渲染函数
+    function renderQuiz(containerId, data) {
+        const container = document.getElementById(containerId);
+        let html = '';
+        data.forEach((item, index) => {
+            // 判断是否是选择题（包含选项A、B、C、D）
+            const isMultipleChoice = item.q.includes('<br>A.') || item.q.includes('<br>B.') || item.q.includes('<br>C.') || item.q.includes('<br>D.');
+            
+            if (isMultipleChoice) {
+                // 选择题
+                html += `
+                    <div class="question-item">
+                        <label>${item.q}</label><br>
+                        <div class="options">
+                            <label><input type="radio" name="${containerId}_q${index}" value="A"> A</label>
+                            <label><input type="radio" name="${containerId}_q${index}" value="B"> B</label>
+                            <label><input type="radio" name="${containerId}_q${index}" value="C"> C</label>
+                            <label><input type="radio" name="${containerId}_q${index}" value="D"> D</label>
+                        </div>
+                        <span class="feedback" id="${containerId}_fb${index}"></span>
+                        <span class="answer-key" id="${containerId}_key${index}">正确: ${item.a}</span>
+                    </div>
+                `;
+            } else {
+                // 填空题
+                html += `
+                    <div class="question-item">
+                        <label>${index + 1}. ${item.q}</label><br>
+                        <input type="text" id="${containerId}_q${index}" placeholder="输入答案">
+                        <span class="feedback" id="${containerId}_fb${index}"></span>
+                        <span class="answer-key" id="${containerId}_key${index}">正确: ${item.a}</span>
+                    </div>
+                `;
+            }
+        });
+        container.innerHTML = html;
+    }
+
+    // 初始化渲染
+    renderQuiz('quiz1', q1_data);
+    renderQuiz('quiz2', q2_data);
+    renderQuiz('quiz3', q3_data);
+    renderQuiz('quiz4', q4_data);
+
+    // 检查答案函数
+    function checkAnswers(containerId, correctAnswers) {
+        let score = 0;
+        correctAnswers.forEach((ans, index) => {
+            const feedback = document.getElementById(`${containerId}_fb${index}`);
+            const key = document.getElementById(`${containerId}_key${index}`);
+            
+            let userAns = '';
+            let correctAns = ans; // 保持原始大小写
+            
+            // 获取用户答案（选择题或填空题）
+            if (document.querySelector(`input[name="${containerId}_q${index}"]`)) {
+                // 选择题
+                const selectedOption = document.querySelector(`input[name="${containerId}_q${index}"]:checked`);
+                userAns = selectedOption ? selectedOption.value : '';
+            } else {
+                // 填空题
+                const input = document.getElementById(`${containerId}_q${index}`);
+                userAns = input ? input.value.trim() : '';
+            }
+
+            // 特殊处理 hundred 允许 one hundred 或 hundred（保持大小写敏感）
+            if(correctAns === 'one hundred' && userAns === 'hundred') userAns = 'one hundred';
+            else if(correctAns === 'hundred' && userAns === 'one hundred') userAns = 'hundred';
+
+            // 严格比较大小写
+            if (userAns === correctAns) {
+                feedback.textContent = "✅";
+                feedback.className = "feedback correct";
+                if (document.getElementById(`${containerId}_q${index}`)) {
+                    document.getElementById(`${containerId}_q${index}`).style.borderColor = "var(--success-color)";
+                }
+                score++;
+                key.style.display = "none";
+            } else {
+                feedback.textContent = "❌";
+                feedback.className = "feedback wrong";
+                if (document.getElementById(`${containerId}_q${index}`)) {
+                    document.getElementById(`${containerId}_q${index}`).style.borderColor = "var(--error-color)";
+                }
+                key.style.display = "inline"; // 显示正确答案
+            }
+        });
+
+        if(containerId === 'quiz4') {
+            const scoreDisplay = document.getElementById('final-score');
+            let percentage = (score / 20) * 100; // 现在总共20题
+            let msg = "";
+            if(percentage === 100) msg = "太棒了！满分！🎉";
+            else if(percentage >= 80) msg = "成绩优秀！继续保持！🌟";
+            else if(percentage >= 60) msg = "及格了，要注意易错词哦！💪";
+            else msg = "还需要多多练习，加油！📚";
+            
+            scoreDisplay.textContent = `你的得分: ${score} / 20 (${msg})`;
+            scoreDisplay.style.color = percentage >= 60 ? "var(--success-color)" : "var(--error-color)";
+        }
+    }
+</script>
+
+</body>
+</html>
