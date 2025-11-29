@@ -140,6 +140,135 @@
         .wrong { color: var(--error-color); }
         .answer-key { color: #7f8c8d; font-size: 0.85em; display: none; }
 
+        /* 数字列表样式 */
+        .number-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .number-item {
+            background: linear-gradient(135deg, #4a90e2, #63b3ed);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .number-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* 闪卡样式 */
+        .flashcard-section {
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .flashcard-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .flashcard {
+            perspective: 1000px;
+            height: 120px;
+            cursor: pointer;
+        }
+
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #4a90e2, #63b3ed);
+            color: white;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #ffa726, #ff9800);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-word {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .card-hint {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .audio-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .flashcard-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
         .final-exam {
             border-left-color: var(--secondary-color);
         }
@@ -418,6 +547,25 @@
             </ul>
         </div>
         
+        <div class="rule-box">
+            <strong>🔢 1-12基数词完整列表（必须死记硬背）：</strong>
+            <div class="number-list">
+                <div class="number-item">1 - one</div>
+                <div class="number-item">2 - two</div>
+                <div class="number-item">3 - three</div>
+                <div class="number-item">4 - four</div>
+                <div class="number-item">5 - five</div>
+                <div class="number-item">6 - six</div>
+                <div class="number-item">7 - seven</div>
+                <div class="number-item">8 - eight</div>
+                <div class="number-item">9 - nine</div>
+                <div class="number-item">10 - ten</div>
+                <div class="number-item">11 - eleven</div>
+                <div class="number-item">12 - twelve</div>
+            </div>
+            <p><strong>记忆提示：</strong>这些单词没有规律，必须逐个记忆！特别注意：12是twelve（不是twelv），15是fifteen（不是fiveteen）。</p>
+        </div>
+        
         <div class="mnemonic">
             <span class="mnemonic-title">💡 基数词记忆小贴士</span>
             <p>12个单独记，13-19 teen结尾；<br>
@@ -471,11 +619,1741 @@
 
     <div class="section-card">
         <h2>第三关：数词的用法 (Usage)</h2>
+        
+        <div class="flashcard-section">
+            <h3>🎴 基数词与序数词闪卡练习</h3>
+            <p>点击卡片查看序数词形式，点击语音图标🔊收听发音</p>
+            
+            <div class="flashcard-container">
+                <!-- 闪卡1-13 + 随机选择的数字，共50个 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">1</div>
+                            <div class="card-word">one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">1st</div>
+                            <div class="card-word">first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">2</div>
+                            <div class="card-word">two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">2nd</div>
+                            <div class="card-word">second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">3</div>
+                            <div class="card-word">three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">3rd</div>
+                            <div class="card-word">third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">4</div>
+                            <div class="card-word">four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">4th</div>
+                            <div class="card-word">fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">5</div>
+                            <div class="card-word">five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">5th</div>
+                            <div class="card-word">fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">6</div>
+                            <div class="card-word">six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">6th</div>
+                            <div class="card-word">sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">7</div>
+                            <div class="card-word">seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">7th</div>
+                            <div class="card-word">seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">8</div>
+                            <div class="card-word">eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">8th</div>
+                            <div class="card-word">eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">9</div>
+                            <div class="card-word">nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">9th</div>
+                            <div class="card-word">ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">10</div>
+                            <div class="card-word">ten</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ten', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">10th</div>
+                            <div class="card-word">tenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('tenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">11</div>
+                            <div class="card-word">eleven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eleven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">11th</div>
+                            <div class="card-word">eleventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eleventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">12</div>
+                            <div class="card-word">twelve</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twelve', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">12th</div>
+                            <div class="card-word">twelfth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twelfth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">13</div>
+                            <div class="card-word">thirteen</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirteen', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">13th</div>
+                            <div class="card-word">thirteenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirteenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 随机选择的数字 14-50 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">14</div>
+                            <div class="card-word">fourteen</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fourteen', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">14th</div>
+                            <div class="card-word">fourteenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fourteenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">15</div>
+                            <div class="card-word">fifteen</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifteen', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">15th</div>
+                            <div class="card-word">fifteenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifteenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">16</div>
+                            <div class="card-word">sixteen</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixteen', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">16th</div>
+                            <div class="card-word">sixteenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixteenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">17</div>
+                            <div class="card-word">seventeen</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventeen', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">17th</div>
+                            <div class="card-word">seventeenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventeenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">18</div>
+                            <div class="card-word">eighteen</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighteen', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">18th</div>
+                            <div class="card-word">eighteenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighteenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">19</div>
+                            <div class="card-word">nineteen</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('nineteen', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">19th</div>
+                            <div class="card-word">nineteenth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('nineteenth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">20</div>
+                            <div class="card-word">twenty</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">20th</div>
+                            <div class="card-word">twentieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twentieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 继续添加更多闪卡到50个 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">21</div>
+                            <div class="card-word">twenty-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">21st</div>
+                            <div class="card-word">twenty-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">22</div>
+                            <div class="card-word">twenty-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">22nd</div>
+                            <div class="card-word">twenty-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">23</div>
+                            <div class="card-word">twenty-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">23rd</div>
+                            <div class="card-word">twenty-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">24</div>
+                            <div class="card-word">twenty-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">24th</div>
+                            <div class="card-word">twenty-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">25</div>
+                            <div class="card-word">twenty-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">25th</div>
+                            <div class="card-word">twenty-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 继续添加更多闪卡到50个 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">26</div>
+                            <div class="card-word">twenty-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">26th</div>
+                            <div class="card-word">twenty-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">27</div>
+                            <div class="card-word">twenty-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">27th</div>
+                            <div class="card-word">twenty-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">28</div>
+                            <div class="card-word">twenty-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">28th</div>
+                            <div class="card-word">twenty-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">29</div>
+                            <div class="card-word">twenty-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">29th</div>
+                            <div class="card-word">twenty-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('twenty-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">30</div>
+                            <div class="card-word">thirty</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">30th</div>
+                            <div class="card-word">thirtieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirtieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">31</div>
+                            <div class="card-word">thirty-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">31st</div>
+                            <div class="card-word">thirty-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">32</div>
+                            <div class="card-word">thirty-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">32nd</div>
+                            <div class="card-word">thirty-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">33</div>
+                            <div class="card-word">thirty-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">33rd</div>
+                            <div class="card-word">thirty-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">34</div>
+                            <div class="card-word">thirty-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">34th</div>
+                            <div class="card-word">thirty-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">35</div>
+                            <div class="card-word">thirty-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">35th</div>
+                            <div class="card-word">thirty-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">36</div>
+                            <div class="card-word">thirty-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">36th</div>
+                            <div class="card-word">thirty-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">37</div>
+                            <div class="card-word">thirty-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">37th</div>
+                            <div class="card-word">thirty-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">38</div>
+                            <div class="card-word">thirty-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">38th</div>
+                            <div class="card-word">thirty-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">39</div>
+                            <div class="card-word">thirty-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">39th</div>
+                            <div class="card-word">thirty-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('thirty-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">40</div>
+                            <div class="card-word">forty</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">40th</div>
+                            <div class="card-word">fortieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fortieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">41</div>
+                            <div class="card-word">forty-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">41st</div>
+                            <div class="card-word">forty-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">42</div>
+                            <div class="card-word">forty-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">42nd</div>
+                            <div class="card-word">forty-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">43</div>
+                            <div class="card-word">forty-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">43rd</div>
+                            <div class="card-word">forty-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">44</div>
+                            <div class="card-word">forty-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">44th</div>
+                            <div class="card-word">forty-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">45</div>
+                            <div class="card-word">forty-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">45th</div>
+                            <div class="card-word">forty-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">46</div>
+                            <div class="card-word">forty-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">46th</div>
+                            <div class="card-word">forty-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">47</div>
+                            <div class="card-word">forty-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">47th</div>
+                            <div class="card-word">forty-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">48</div>
+                            <div class="card-word">forty-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">48th</div>
+                            <div class="card-word">forty-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">49</div>
+                            <div class="card-word">forty-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">49th</div>
+                            <div class="card-word">forty-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('forty-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">50</div>
+                            <div class="card-word">fifty</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">50th</div>
+                            <div class="card-word">fiftieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fiftieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 继续添加51-100的闪卡 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">51</div>
+                            <div class="card-word">fifty-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">51st</div>
+                            <div class="card-word">fifty-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">52</div>
+                            <div class="card-word">fifty-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">52nd</div>
+                            <div class="card-word">fifty-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">53</div>
+                            <div class="card-word">fifty-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">53rd</div>
+                            <div class="card-word">fifty-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">54</div>
+                            <div class="card-word">fifty-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">54th</div>
+                            <div class="card-word">fifty-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">55</div>
+                            <div class="card-word">fifty-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">55th</div>
+                            <div class="card-word">fifty-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">56</div>
+                            <div class="card-word">fifty-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">56th</div>
+                            <div class="card-word">fifty-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">57</div>
+                            <div class="card-word">fifty-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">57th</div>
+                            <div class="card-word">fifty-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">58</div>
+                            <div class="card-word">fifty-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">58th</div>
+                            <div class="card-word">fifty-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">59</div>
+                            <div class="card-word">fifty-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">59th</div>
+                            <div class="card-word">fifty-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('fifty-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">60</div>
+                            <div class="card-word">sixty</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">60th</div>
+                            <div class="card-word">sixtieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixtieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 继续添加61-70的闪卡 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">61</div>
+                            <div class="card-word">sixty-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">61st</div>
+                            <div class="card-word">sixty-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">62</div>
+                            <div class="card-word">sixty-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">62nd</div>
+                            <div class="card-word">sixty-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">63</div>
+                            <div class="card-word">sixty-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">63rd</div>
+                            <div class="card-word">sixty-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">64</div>
+                            <div class="card-word">sixty-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">64th</div>
+                            <div class="card-word">sixty-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">65</div>
+                            <div class="card-word">sixty-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">65th</div>
+                            <div class="card-word">sixty-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">66</div>
+                            <div class="card-word">sixty-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">66th</div>
+                            <div class="card-word">sixty-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">67</div>
+                            <div class="card-word">sixty-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">67th</div>
+                            <div class="card-word">sixty-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">68</div>
+                            <div class="card-word">sixty-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">68th</div>
+                            <div class="card-word">sixty-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">69</div>
+                            <div class="card-word">sixty-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">69th</div>
+                            <div class="card-word">sixty-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('sixty-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">70</div>
+                            <div class="card-word">seventy</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">70th</div>
+                            <div class="card-word">seventieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 继续添加71-80的闪卡 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">71</div>
+                            <div class="card-word">seventy-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">71st</div>
+                            <div class="card-word">seventy-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">72</div>
+                            <div class="card-word">seventy-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">72nd</div>
+                            <div class="card-word">seventy-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">73</div>
+                            <div class="card-word">seventy-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">73rd</div>
+                            <div class="card-word">seventy-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">74</div>
+                            <div class="card-word">seventy-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">74th</div>
+                            <div class="card-word">seventy-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">75</div>
+                            <div class="card-word">seventy-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">75th</div>
+                            <div class="card-word">seventy-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">76</div>
+                            <div class="card-word">seventy-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">76th</div>
+                            <div class="card-word">seventy-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">77</div>
+                            <div class="card-word">seventy-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">77th</div>
+                            <div class="card-word">seventy-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">78</div>
+                            <div class="card-word">seventy-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">78th</div>
+                            <div class="card-word">seventy-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">79</div>
+                            <div class="card-word">seventy-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">79th</div>
+                            <div class="card-word">seventy-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('seventy-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">80</div>
+                            <div class="card-word">eighty</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">80th</div>
+                            <div class="card-word">eightieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eightieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 继续添加81-90的闪卡 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">81</div>
+                            <div class="card-word">eighty-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">81st</div>
+                            <div class="card-word">eighty-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">82</div>
+                            <div class="card-word">eighty-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">82nd</div>
+                            <div class="card-word">eighty-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">83</div>
+                            <div class="card-word">eighty-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">83rd</div>
+                            <div class="card-word">eighty-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">84</div>
+                            <div class="card-word">eighty-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">84th</div>
+                            <div class="card-word">eighty-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">85</div>
+                            <div class="card-word">eighty-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">85th</div>
+                            <div class="card-word">eighty-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">86</div>
+                            <div class="card-word">eighty-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">86th</div>
+                            <div class="card-word">eighty-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">87</div>
+                            <div class="card-word">eighty-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">87th</div>
+                            <div class="card-word">eighty-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">88</div>
+                            <div class="card-word">eighty-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">88th</div>
+                            <div class="card-word">eighty-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">89</div>
+                            <div class="card-word">eighty-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">89th</div>
+                            <div class="card-word">eighty-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('eighty-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">90</div>
+                            <div class="card-word">ninety</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">90th</div>
+                            <div class="card-word">ninetieth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninetieth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 继续添加91-100的闪卡 -->
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">91</div>
+                            <div class="card-word">ninety-one</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-one', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">91st</div>
+                            <div class="card-word">ninety-first</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-first', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">92</div>
+                            <div class="card-word">ninety-two</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-two', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">92nd</div>
+                            <div class="card-word">ninety-second</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-second', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">93</div>
+                            <div class="card-word">ninety-three</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-three', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">93rd</div>
+                            <div class="card-word">ninety-third</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-third', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">94</div>
+                            <div class="card-word">ninety-four</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-four', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">94th</div>
+                            <div class="card-word">ninety-fourth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-fourth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">95</div>
+                            <div class="card-word">ninety-five</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-five', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">95th</div>
+                            <div class="card-word">ninety-fifth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-fifth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">96</div>
+                            <div class="card-word">ninety-six</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-six', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">96th</div>
+                            <div class="card-word">ninety-sixth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-sixth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">97</div>
+                            <div class="card-word">ninety-seven</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-seven', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">97th</div>
+                            <div class="card-word">ninety-seventh</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-seventh', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">98</div>
+                            <div class="card-word">ninety-eight</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-eight', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">98th</div>
+                            <div class="card-word">ninety-eighth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-eighth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">99</div>
+                            <div class="card-word">ninety-nine</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-nine', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">99th</div>
+                            <div class="card-word">ninety-ninth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('ninety-ninth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flashcard" onclick="flipCard(this)">
+                    <div class="flashcard-inner">
+                        <div class="card-front">
+                            <div class="card-number">100</div>
+                            <div class="card-word">hundred</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('hundred', event)">🔊</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="card-number">100th</div>
+                            <div class="card-word">hundredth</div>
+                            <div class="card-hint">点击翻转</div>
+                            <div class="audio-btn" onclick="speakText('hundredth', event)">🔊</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flashcard-controls">
+                <button class="btn" onclick="resetAllCards()">重置所有卡片</button>
+                <button class="btn" onclick="speakAllCardinals()">播放所有基数词</button>
+                <button class="btn" onclick="speakAllOrdinals()">播放所有序数词</button>
+            </div>
+        </div>
+        
         <div class="rule-box">
             <ul>
                 <li><strong>编号：</strong> Room 101, Bus No. 5, Page 9 (首字母大写，用基数词)。</li>
                 <li><strong>日期：</strong> 5月1日 -> May (the) first (写作 May 1st)。</li>
                 <li><strong>分数：</strong> 分子用基数，分母用序数。分子大于1，分母加s (1/3 one third; 2/3 two third<strong>s</strong>)。</li>
+                <li><strong>特殊情况：</strong> 
+                    <ul style="margin-left: 20px; margin-top: 5px;">
+                        <li>1/2 → one second 或 a half</li>
+                        <li>1/4 → one fourth 或 a quarter</li>
+                        <li>3/4 → three fourths 或 three quarters</li>
+                    </ul>
+                </li>
                 <li><strong>确数与概数：</strong> hundred/thousand 前有数字不加s，没数字加s并带of (two hundred; hundreds of)。</li>
             </ul>
         </div>
@@ -512,13 +2390,13 @@
                         </div>
                     </div>
                     
-                    <!-- To 示例：8:45 -->
+                    <!-- To 示例：10:40 -->
                     <div class="clock-example">
                         <div class="clock-diagram">
                             <div class="clock-face">
                                 <div class="clock-center"></div>
-                                <div class="hour-hand" style="transform: translate(-50%, -100%) rotate(240deg);"></div>
-                                <div class="minute-hand" style="transform: translate(-50%, -100%) rotate(270deg);"></div>
+                                <div class="hour-hand" style="transform: translate(-50%, -100%) rotate(300deg);"></div>
+                                <div class="minute-hand" style="transform: translate(-50%, -100%) rotate(240deg);"></div>
                                 <div class="clock-numbers">
                                     <span class="number" style="top: 10px; left: 50%;">12</span>
                                     <span class="number" style="top: 50%; right: 10px;">3</span>
@@ -528,11 +2406,11 @@
                             </div>
                         </div>
                         <div class="clock-info">
-                            <h5>To 示例：8:45</h5>
-                            <p><strong>时针</strong>：指向8点位置</p>
-                            <p><strong>分针</strong>：指向9点位置（45分钟）</p>
-                            <p><strong>表达</strong>：<span class="highlight">a quarter to nine</span></p>
-                            <p><em>差15分钟到9点</em></p>
+                            <h5>To 示例：10:40</h5>
+                            <p><strong>时针</strong>：指向10点位置</p>
+                            <p><strong>分针</strong>：指向8点位置（40分钟）</p>
+                            <p><strong>表达</strong>：<span class="highlight">twenty to eleven</span></p>
+                            <p><em>差20分钟到11点</em></p>
                         </div>
                     </div>
                 </div>
@@ -550,7 +2428,7 @@
                         <tr><td>0-30分钟</td><td>分钟数 + past + 小时</td><td>8:10 → ten past eight</td></tr>
                         <tr><td>15分钟</td><td>a quarter past + 小时</td><td>9:15 → a quarter past nine</td></tr>
                         <tr><td>30分钟</td><td>half past + 小时</td><td>10:30 → half past ten</td></tr>
-                        <tr><td>31-59分钟</td><td>(60-分钟数) + to + (小时+1)</td><td>8:45 → a quarter to nine</td></tr>
+                        <tr><td>31-59分钟</td><td>(60-分钟数) + to + (小时+1)</td><td>10:40 → twenty to eleven</td></tr>
                         <tr><td>45分钟</td><td>a quarter to + (小时+1)</td><td>11:45 → a quarter to twelve</td></tr>
                     </table>
                 </div>
@@ -698,6 +2576,84 @@
     renderQuiz('quiz2', q2_data);
     renderQuiz('quiz3', q3_data);
     renderQuiz('quiz4', q4_data);
+
+    // 闪卡功能
+    function flipCard(card) {
+        card.classList.toggle('flipped');
+    }
+
+    // TTS语音播放功能
+    function speakText(text, event) {
+        if (event) {
+            event.stopPropagation(); // 防止触发卡片翻转
+        }
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            utterance.pitch = 1;
+            
+            // 停止当前正在播放的语音
+            speechSynthesis.cancel();
+            
+            // 播放新语音
+            speechSynthesis.speak(utterance);
+        } else {
+            alert('您的浏览器不支持语音合成功能');
+        }
+    }
+
+    // 重置所有闪卡
+    function resetAllCards() {
+        const cards = document.querySelectorAll('.flashcard');
+        cards.forEach(card => {
+            card.classList.remove('flipped');
+        });
+    }
+
+    // 播放所有基数词
+        function speakAllCardinals() {
+            const cardinalNumbers = [
+                'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+                'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty',
+                'twenty-one', 'twenty-two', 'twenty-three', 'twenty-four', 'twenty-five', 'twenty-six', 'twenty-seven', 'twenty-eight', 'twenty-nine', 'thirty',
+                'thirty-one', 'thirty-two', 'thirty-three', 'thirty-four', 'thirty-five', 'thirty-six', 'thirty-seven', 'thirty-eight', 'thirty-nine', 'forty',
+                'forty-one', 'forty-two', 'forty-three', 'forty-four', 'forty-five', 'forty-six', 'forty-seven', 'forty-eight', 'forty-nine', 'fifty'
+            ];
+            
+            let index = 0;
+            const playNext = () => {
+                if (index < cardinalNumbers.length) {
+                    speakText(cardinalNumbers[index]);
+                    index++;
+                    setTimeout(playNext, 1500); // 1.5秒间隔
+                }
+            };
+            
+            playNext();
+        }
+
+        // 播放所有序数词
+        function speakAllOrdinals() {
+            const ordinalNumbers = [
+                'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth',
+                'eleventh', 'twelfth', 'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth', 'twentieth',
+                'twenty-first', 'twenty-second', 'twenty-third', 'twenty-fourth', 'twenty-fifth', 'twenty-sixth', 'twenty-seventh', 'twenty-eighth', 'twenty-ninth', 'thirtieth',
+                'thirty-first', 'thirty-second', 'thirty-third', 'thirty-fourth', 'thirty-fifth', 'thirty-sixth', 'thirty-seventh', 'thirty-eighth', 'thirty-ninth', 'fortieth',
+                'forty-first', 'forty-second', 'forty-third', 'forty-fourth', 'forty-fifth', 'forty-sixth', 'forty-seventh', 'forty-eighth', 'forty-ninth', 'fiftieth'
+            ];
+            
+            let index = 0;
+            const playNext = () => {
+                if (index < ordinalNumbers.length) {
+                    speakText(ordinalNumbers[index]);
+                    index++;
+                    setTimeout(playNext, 1500); // 1.5秒间隔
+                }
+            };
+            
+            playNext();
+        }
 
     // 检查答案函数
     function checkAnswers(containerId, correctAnswers) {
