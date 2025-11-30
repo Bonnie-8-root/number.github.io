@@ -523,6 +523,54 @@
             transform: translate(-50%, -50%);
         }
 
+        /* 数字读法样式 */
+        .number-reading {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .number-reading h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+        }
+
+        .number-reading ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .number-reading li {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+
+        .example-box {
+            background: #e8f4fd;
+            border-left: 3px solid #3498db;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .reading-note {
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+            padding: 12px 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-size: 0.9em;
+            color: #856404;
+        }
+
     </style>
 </head>
 <body>
@@ -572,6 +620,67 @@
             整十 ty 结尾，几十几中间连字符；<br>
             <strong>特别注意：</strong><br>
             40是 forty (没u)，12是 twelve，15是 fifteen (不是fiveteen)！</p>
+        </div>
+
+        <!-- 数字读法规则 -->
+        <div class="number-reading">
+            <h3>🔢 万位数以内数字的读法规则</h3>
+            <p>英语中数字的读法遵循一定的规律，掌握这些规则可以帮助你准确读出任何数字。</p>
+            
+            <h4>📚 基本规则：</h4>
+            <ul>
+                <li><strong>1-12</strong>：有独立的单词（one, two, three... twelve）</li>
+                <li><strong>13-19</strong>：以-teen结尾（thirteen, fourteen... nineteen）</li>
+                <li><strong>20-90</strong>：以-ty结尾（twenty, thirty... ninety）</li>
+                <li><strong>21-99</strong>：十位数 + 连字符 + 个位数（twenty-one, thirty-two... ninety-nine）</li>
+            </ul>
+            
+            <h4>💯 百位数读法：</h4>
+            <ul>
+                <li><strong>100-999</strong>：百位数 + hundred + and + 十位数和个位数</li>
+                <li><strong>示例</strong>：
+                    <div class="example-box">
+                        123 → one hundred and twenty-three<br>
+                        456 → four hundred and fifty-six<br>
+                        789 → seven hundred and eighty-nine
+                    </div>
+                </li>
+            </ul>
+            
+            <h4>🔢 千位数读法：</h4>
+            <ul>
+                <li><strong>1,000-9,999</strong>：千位数 + thousand + 百位数 + and + 十位数和个位数</li>
+                <li><strong>示例</strong>：
+                    <div class="example-box">
+                        1,234 → one thousand two hundred and thirty-four<br>
+                        5,678 → five thousand six hundred and seventy-eight<br>
+                        9,999 → nine thousand nine hundred and ninety-nine
+                    </div>
+                </li>
+            </ul>
+            
+            <h4>🎯 万位数读法：</h4>
+            <ul>
+                <li><strong>10,000-99,999</strong>：万位数 + thousand + 千位数 + 百位数 + and + 十位数和个位数</li>
+                <li><strong>示例</strong>：
+                    <div class="example-box">
+                        12,345 → twelve thousand three hundred and forty-five<br>
+                        45,678 → forty-five thousand six hundred and seventy-eight<br>
+                        99,999 → ninety-nine thousand nine hundred and ninety-nine
+                    </div>
+                </li>
+            </ul>
+            
+            <h4>⚠️ 注意事项：</h4>
+            <div class="reading-note">
+                <strong>重要规则：</strong>
+                <ul>
+                    <li>百位数和十位数之间必须加<strong>and</strong></li>
+                    <li>千位数和百位数之间不加and</li>
+                    <li>数字中的逗号只是分隔符，不影响读法</li>
+                    <li>当数字为整百或整千时，省略后面的部分</li>
+                </ul>
+            </div>
         </div>
 
         <div class="rule-box">
@@ -2341,6 +2450,8 @@
                 <button class="btn" onclick="speakAllOrdinals()">播放所有序数词</button>
             </div>
         </div>
+        
+
         
         <div class="rule-box">
             <ul>
